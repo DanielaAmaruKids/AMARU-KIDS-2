@@ -4,6 +4,8 @@ import {
   buildAccessibilityProfile,
   getAdaptationSummary,
 } from './services/adaptiveEngine.js';
+import { adaptContentWithGemini, isGeminiReady } from './services/gemini.js';
+import { isFirebaseReady, saveFamilyProgress } from './services/firebase.js';
 
 const initialProgress = {
   completedPages: 0,
@@ -27,12 +29,15 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [progress, setProgress] = useState(initialProgress);
   const [fontScale, setFontScale] = useState(1);
+  const [adaptedText, setAdaptedText] = useState('');
+  const [statusMessage, setStatusMessage] = useState('');
 
   const profile = useMemo(
     () => buildAccessibilityProfile(selectedNeeds),
     [selectedNeeds],
   );
   const page = storyPages[currentPage];
+  const storyText = adaptedText || page.text;
   const isCorrect = selectedAnswer === page.answer;
 
   function toggleNeed(id) {
@@ -46,15 +51,44 @@ function App() {
   function completeActivity() {
     if (!isCorrect) return;
 
-    setProgress((current) => ({
-      ...current,
-      completedPages: Math.max(current.completedPages, currentPage + 1),
-      stars: current.stars + 1,
-    }));
+    const nextProgress = {
+      ...progress,
+      completedPages: Math.max(progress.completedPages, currentPage + 1),
+      stars: progress.stars + 1,
+    };
+
+    setProgress(nextProgress);
+    saveFamilyProgress(nextProgress)
+      .then((result) => {
+        setStatusMessage(
+          result.mode === 'firebase'
+            ? 'Progreso guardado en Firebase.'
+            : 'Progreso guardado localmente hasta conectar Firebase.',
+        );
+      })
+      .catch(() => {
+        setStatusMessage('No se pudo guardar el progreso en Firebase.');
+      });
 
     if (currentPage < storyPages.length - 1) {
       setCurrentPage((value) => value + 1);
       setSelectedAnswer('');
+      setAdaptedText('');
+    }
+  }
+
+  async function adaptStoryText() {
+    setStatusMessage('Adaptando contenido...');
+    try {
+      const result = await adaptContentWithGemini({ profile, page });
+      setAdaptedText(result.adaptedText);
+      setStatusMessage(
+        result.source === 'gemini'
+          ? 'Contenido adaptado con Gemini AI.'
+          : 'Contenido adaptado en modo local. Agrega una clave Gemini para IA real.',
+      );
+    } catch (error) {
+      setStatusMessage(error.message);
     }
   }
 
@@ -76,6 +110,10 @@ function App() {
             adaptativa para ninos con discapacidad sensorial y necesidades
             educativas especificas.
           </p>
+          <div className="service-status" aria-label="Estado de servicios">
+            <span>{isFirebaseReady() ? 'Firebase conectado' : 'Firebase pendiente'}</span>
+            <span>{isGeminiReady() ? 'Gemini conectado' : 'Gemini pendiente'}</span>
+          </div>
         </div>
         <div className="hero-panel" aria-label="Resumen de impacto">
           <strong>+900.000</strong>
@@ -129,7 +167,7 @@ function App() {
           </div>
 
           <h2 id="story-title">{page.title}</h2>
-          <p className="story-text">{page.text}</p>
+          <p className="story-text">{storyText}</p>
 
           {profile.pictogramSupport && (
             <div className="pictograms" aria-label="Pictogramas de apoyo">
@@ -140,8 +178,11 @@ function App() {
           )}
 
           <div className="actions">
-            <button type="button" onClick={() => speak(`${page.title}. ${page.text}`)}>
+            <button type="button" onClick={() => speak(`${page.title}. ${storyText}`)}>
               Escuchar historia
+            </button>
+            <button type="button" onClick={adaptStoryText}>
+              Adaptar con IA
             </button>
             <button type="button" onClick={() => window.speechSynthesis?.cancel()}>
               Detener audio
@@ -172,6 +213,7 @@ function App() {
           >
             Ganar estrella
           </button>
+          {statusMessage && <p className="status-message">{statusMessage}</p>}
         </section>
 
         <aside className="family-panel" aria-label="Panel familiar">
