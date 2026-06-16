@@ -114,6 +114,10 @@ VITE_GEMINI_API_KEY=
 
 Sin estas claves, la app funciona como prototipo local y guarda el progreso en el navegador.
 
+Para activar Firebase y Gemini en la pagina publica de GitHub Pages, revisa:
+
+- [Configuracion publica](docs/CONFIGURACION_PUBLICA.md)
+
 ## Despliegue
 
 Opciones recomendadas para publicar la demo:
