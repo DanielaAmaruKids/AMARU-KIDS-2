@@ -99,9 +99,11 @@ Sin estas claves, la app funciona como prototipo local y guarda el progreso en e
 
 Opciones recomendadas para publicar la demo:
 
+- GitHub Pages: este repositorio incluye `.github/workflows/deploy-pages.yml`.
 - Vercel: importar el repositorio, elegir Vite y publicar.
 - Netlify: conectar el repositorio y usar `npm run build` con carpeta `dist`.
-- GitHub Pages: compilar con Vite y publicar la carpeta `dist`.
+
+Para GitHub Pages, activa **Settings > Pages > Source > GitHub Actions** y vuelve a ejecutar el workflow si hace falta.
 
 ## Roadmap
 
