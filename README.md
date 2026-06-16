@@ -23,12 +23,32 @@ Estado actual:
 
 ## Entregables
 
+- Demo publica: https://danielaamarukids.github.io/AMARU-KIDS-2/
+- Repositorio: https://github.com/DanielaAmaruKids/AMARU-KIDS-2
 - [Entrega final](docs/ENTREGA_FINAL.md)
-- [Whitepaper](docs/WHITEPAPER.md)
+- [Entregables Semana 3](docs/ENTREGABLES_SEMANA3.md)
+- [Pitch deck final](docs/pitch/amaru-kids-pitch-final.pptx)
+- [Infografia](docs/infografia/amaru-kids-infografia.png)
+- [Whitepaper v1.0](docs/WHITEPAPER.md)
+- [Whitepaper v1.0 PDF](docs/whitepaper/amaru-kids-whitepaper-v1.pdf)
 - [Maqueta del MVP](docs/MAQUETA.md)
 - [Pitch de presentacion](docs/PITCH.md)
 - [Video demo Semana 2](docs/video/amaru-kids-demo-s2.mp4)
 - [Tablero Kanban](docs/KANBAN.md)
+- [Preguntas del jurado](docs/PREGUNTAS_JURADO.md)
+- [Confirmacion publica Firebase/Gemini](docs/CONFIRMACION_PUBLICA.md)
+
+## Entregables Semana 3
+
+La entrega final incluye:
+
+- Pitch deck final de 12 diapositivas.
+- Infografia visual del proyecto.
+- Whitepaper v1.0 en Markdown y PDF.
+- Preguntas y respuestas para jurado.
+- README con enlaces finales.
+- MVP publicado en GitHub Pages.
+- Firebase y Gemini preparados para funcionar con variables seguras.
 
 ## Video demo
 
@@ -118,6 +138,19 @@ Sin estas claves, la app funciona como prototipo local y guarda el progreso en e
 Para activar Firebase y Gemini en la pagina publica de GitHub Pages, revisa:
 
 - [Configuracion publica](docs/CONFIGURACION_PUBLICA.md)
+
+## Firebase y Gemini
+
+Firebase y Gemini ya estan integrados en codigo y se activan cuando existen las variables `VITE_*` correspondientes.
+
+Estado actual:
+
+- Firebase / Firestore creado para el proyecto.
+- Gemini API probado localmente.
+- La demo publica esta preparada para recibir las claves desde GitHub Actions Secrets.
+- No se publican claves privadas en el repositorio.
+
+Para confirmar funcionamiento en la pagina publica, agrega los secretos `VITE_FIREBASE_*` y `VITE_GEMINI_API_KEY` en GitHub, vuelve a ejecutar el despliegue de GitHub Pages y prueba el flujo del MVP desde la URL publica.
 
 ## Despliegue
 
