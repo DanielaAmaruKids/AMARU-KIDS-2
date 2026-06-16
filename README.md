@@ -28,6 +28,7 @@ Estado actual:
 - [Maqueta del MVP](docs/MAQUETA.md)
 - [Pitch de presentacion](docs/PITCH.md)
 - [Video demo Semana 2](docs/video/amaru-kids-demo-s2.mp4)
+- [Tablero Kanban](docs/KANBAN.md)
 
 ## Video demo
 
