@@ -21,6 +21,13 @@ Estado actual:
 - Firebase preparado para guardar progreso cuando se agreguen claves reales.
 - Gemini AI preparado para adaptar contenido cuando se agregue una clave real.
 
+## Entregables
+
+- [Entrega final](docs/ENTREGA_FINAL.md)
+- [Whitepaper](docs/WHITEPAPER.md)
+- [Maqueta del MVP](docs/MAQUETA.md)
+- [Pitch de presentacion](docs/PITCH.md)
+
 ## Problema
 
 En Ecuador, mas de 900.000 personas presentan dificultades relacionadas con la vision, la audicion o la comunicacion. Muchas aplicaciones educativas siguen dependiendo de interfaces visuales complejas, instrucciones habladas, costos altos o contenidos que no responden al contexto latinoamericano.
