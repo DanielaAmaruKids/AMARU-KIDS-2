@@ -27,6 +27,18 @@ Estado actual:
 - [Whitepaper](docs/WHITEPAPER.md)
 - [Maqueta del MVP](docs/MAQUETA.md)
 - [Pitch de presentacion](docs/PITCH.md)
+- [Video demo Semana 2](docs/video/amaru-kids-demo-s2.mp4)
+
+## Video demo
+
+El video demo de 2 minutos muestra:
+
+- Problema en 1 oracion.
+- Pantalla principal.
+- Flujo del MVP.
+- Funcion de IA/adaptacion.
+- Impacto ODS.
+- Nombre del equipo.
 
 ## Problema
 
