@@ -39,6 +39,7 @@ function App() {
   const page = storyPages[currentPage];
   const storyText = adaptedText || page.text;
   const isCorrect = selectedAnswer === page.answer;
+  const progressPercent = Math.round((progress.completedPages / storyPages.length) * 100);
 
   function toggleNeed(id) {
     setSelectedNeeds((current) =>
@@ -46,6 +47,13 @@ function App() {
         ? current.filter((item) => item !== id)
         : [...current, id],
     );
+  }
+
+  function goToPage(index) {
+    setCurrentPage(index);
+    setSelectedAnswer('');
+    setAdaptedText('');
+    setStatusMessage('');
   }
 
   function completeActivity() {
@@ -71,9 +79,7 @@ function App() {
       });
 
     if (currentPage < storyPages.length - 1) {
-      setCurrentPage((value) => value + 1);
-      setSelectedAnswer('');
-      setAdaptedText('');
+      goToPage(currentPage + 1);
     }
   }
 
@@ -85,7 +91,7 @@ function App() {
       setStatusMessage(
         result.source === 'gemini'
           ? 'Contenido adaptado con Gemini AI.'
-          : 'Contenido adaptado en modo local. Agrega una clave Gemini para IA real.',
+          : 'Modo demo: agrega una clave Gemini para activar IA real.',
       );
     } catch (error) {
       setStatusMessage(error.message);
@@ -102,51 +108,71 @@ function App() {
       style={{ '--font-scale': fontScale }}
     >
       <section className="hero" aria-labelledby="page-title">
-        <div>
-          <p className="eyebrow">Tecnologia inclusiva para transformar vidas</p>
+        <div className="hero-copy">
+          <p className="eyebrow">MVP educativo inclusivo</p>
           <h1 id="page-title">AMARU KIDS</h1>
           <p className="lead">
-            Plataforma educativa inclusiva con inteligencia artificial
-            adaptativa para ninos con discapacidad sensorial y necesidades
-            educativas especificas.
+            Una aventura de aprendizaje que adapta voz, color, pictogramas y
+            ritmo segun cada nino.
           </p>
-          <div className="service-status" aria-label="Estado de servicios">
-            <span>{isFirebaseReady() ? 'Firebase conectado' : 'Firebase pendiente'}</span>
-            <span>{isGeminiReady() ? 'Gemini conectado' : 'Gemini pendiente'}</span>
+          <div className="hero-actions">
+            <a href="#mvp" className="hero-button">
+              Explorar demo
+            </a>
+            <a href="#impacto" className="hero-link">
+              Ver impacto
+            </a>
           </div>
         </div>
-        <div className="hero-panel" aria-label="Resumen de impacto">
-          <strong>+900.000</strong>
-          <span>
-            personas en Ecuador presentan dificultades visuales, auditivas o de
-            comunicacion.
-          </span>
+
+        <div className="hero-dashboard" aria-label="Resumen del proyecto">
+          <div className="mascot-card">
+            <div className="mascot-face" aria-hidden="true">
+              AK
+            </div>
+            <div>
+              <strong>Modo aprendizaje adaptativo</strong>
+              <span>{getAdaptationSummary(profile)}</span>
+            </div>
+          </div>
+          <div className="service-status" aria-label="Estado de servicios">
+            <span>{isFirebaseReady() ? 'Firebase activo' : 'Firebase listo'}</span>
+            <span>{isGeminiReady() ? 'Gemini activo' : 'Gemini listo'}</span>
+          </div>
+          <div className="impact-number">
+            <strong>+900.000</strong>
+            <span>personas con barreras visuales, auditivas o comunicacionales</span>
+          </div>
         </div>
       </section>
 
-      <section className="workspace" aria-label="MVP interactivo">
-        <aside className="sidebar" aria-label="Perfil de accesibilidad">
-          <h2>Perfil de accesibilidad</h2>
-          <p>{getAdaptationSummary(profile)}</p>
+      <section className="mvp-grid" id="mvp" aria-label="MVP interactivo">
+        <aside className="control-panel" aria-label="Perfil de accesibilidad">
+          <div className="panel-heading">
+            <p>Perfil</p>
+            <h2>Accesibilidad viva</h2>
+          </div>
 
           <div className="need-list">
             {accessibilityNeeds.map((need) => (
-              <label key={need.id} className="need-option">
-                <input
-                  type="checkbox"
-                  checked={selectedNeeds.includes(need.id)}
-                  onChange={() => toggleNeed(need.id)}
-                />
+              <button
+                key={need.id}
+                type="button"
+                className={`need-card ${selectedNeeds.includes(need.id) ? 'is-selected' : ''}`}
+                aria-pressed={selectedNeeds.includes(need.id)}
+                onClick={() => toggleNeed(need.id)}
+              >
+                <span className="need-initial">{need.label.slice(0, 1)}</span>
                 <span>
                   <strong>{need.label}</strong>
                   <small>{need.description}</small>
                 </span>
-              </label>
+              </button>
             ))}
           </div>
 
           <label className="range-control">
-            Tamaño de letra
+            Tamano de letra
             <input
               type="range"
               min="1"
@@ -158,16 +184,32 @@ function App() {
           </label>
         </aside>
 
-        <section className="story-panel" aria-labelledby="story-title">
-          <div className="story-topline">
-            <span>
-              Pagina {currentPage + 1} de {storyPages.length}
-            </span>
-            {profile.visualAlerts && <span className="alert-pill">Alerta visual activa</span>}
+        <section className="learning-console" aria-labelledby="story-title">
+          <div className="console-top">
+            <div>
+              <p>Historia interactiva</p>
+              <h2 id="story-title">{page.title}</h2>
+            </div>
+            <div className="page-dots" aria-label="Paginas">
+              {storyPages.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={index === currentPage ? 'is-active' : ''}
+                  aria-label={`Ir a pagina ${index + 1}`}
+                  onClick={() => goToPage(index)}
+                />
+              ))}
+            </div>
           </div>
 
-          <h2 id="story-title">{page.title}</h2>
-          <p className="story-text">{storyText}</p>
+          <div className="story-stage">
+            <div className="story-art" aria-hidden="true">
+              <span>{currentPage + 1}</span>
+              <div className="story-path" />
+            </div>
+            <p className="story-text">{storyText}</p>
+          </div>
 
           {profile.pictogramSupport && (
             <div className="pictograms" aria-label="Pictogramas de apoyo">
@@ -179,30 +221,32 @@ function App() {
 
           <div className="actions">
             <button type="button" onClick={() => speak(`${page.title}. ${storyText}`)}>
-              Escuchar historia
+              Escuchar
             </button>
-            <button type="button" onClick={adaptStoryText}>
+            <button type="button" className="ai-button" onClick={adaptStoryText}>
               Adaptar con IA
             </button>
             <button type="button" onClick={() => window.speechSynthesis?.cancel()}>
-              Detener audio
+              Pausar
             </button>
           </div>
 
           <fieldset className="question">
             <legend>{page.question}</legend>
-            {page.options.map((option) => (
-              <label key={option}>
-                <input
-                  type="radio"
-                  name="answer"
-                  value={option}
-                  checked={selectedAnswer === option}
-                  onChange={(event) => setSelectedAnswer(event.target.value)}
-                />
-                {option}
-              </label>
-            ))}
+            <div className="answer-grid">
+              {page.options.map((option) => (
+                <label key={option} className={selectedAnswer === option ? 'is-picked' : ''}>
+                  <input
+                    type="radio"
+                    name="answer"
+                    value={option}
+                    checked={selectedAnswer === option}
+                    onChange={(event) => setSelectedAnswer(event.target.value)}
+                  />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
           </fieldset>
 
           <button
@@ -217,7 +261,13 @@ function App() {
         </section>
 
         <aside className="family-panel" aria-label="Panel familiar">
-          <h2>Panel familiar</h2>
+          <div className="panel-heading">
+            <p>Familia</p>
+            <h2>Progreso claro</h2>
+          </div>
+          <div className="progress-ring" aria-label={`Progreso ${progressPercent}%`}>
+            <div>{progressPercent}%</div>
+          </div>
           <dl>
             <div>
               <dt>Historia completada</dt>
@@ -230,15 +280,36 @@ function App() {
               <dd>{progress.minutes} min</dd>
             </div>
             <div>
-              <dt>Estrellas obtenidas</dt>
+              <dt>Estrellas</dt>
               <dd>{progress.stars}</dd>
             </div>
           </dl>
-          <p className="family-note">
-            La version final guardara estos avances en Firebase y generara
-            reportes para familias y docentes.
-          </p>
         </aside>
+      </section>
+
+      <section className="impact-section" id="impacto" aria-label="Impacto">
+        <div>
+          <p className="eyebrow">Impacto y ODS</p>
+          <h2>Inclusiva desde el primer toque</h2>
+          <p>
+            AMARU KIDS aporta a ODS 4 y ODS 10 con una experiencia accesible,
+            medible y preparada para crecer hacia escuelas y familias.
+          </p>
+        </div>
+        <div className="impact-cards">
+          <article>
+            <strong>ODS 4</strong>
+            <span>Educacion de calidad</span>
+          </article>
+          <article>
+            <strong>ODS 10</strong>
+            <span>Reduccion de desigualdades</span>
+          </article>
+          <article>
+            <strong>MVP</strong>
+            <span>Demo web publica</span>
+          </article>
+        </div>
       </section>
     </main>
   );
