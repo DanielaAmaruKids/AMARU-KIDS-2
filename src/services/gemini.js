@@ -5,12 +5,27 @@ export function isGeminiReady() {
   return Boolean(import.meta.env.VITE_GEMINI_API_KEY);
 }
 
+function buildLocalAdaptation({ profile, page }) {
+  const baseText = page.text.split('.')[0] || page.text;
+  const pictograms = page.pictograms.join(', ');
+
+  if (profile.highContrast) {
+    return `${baseText}. Mira las palabras grandes y escucha el audio. Pictogramas: ${pictograms}.`;
+  }
+
+  if (profile.pictogramSupport) {
+    return `${baseText}. Apoyos visuales: ${pictograms}.`;
+  }
+
+  return `${baseText}. Un paso a la vez. Respira, observa y responde cuando estes listo.`;
+}
+
 export async function adaptContentWithGemini({ profile, page }) {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
     return {
-      adaptedText: page.text,
+      adaptedText: buildLocalAdaptation({ profile, page }),
       source: 'local',
     };
   }

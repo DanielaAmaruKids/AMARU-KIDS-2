@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { accessibilityNeeds, storyPages } from './data/story.js';
 import { buildAccessibilityProfile } from './services/adaptiveEngine.js';
 import { saveFamilyProgress } from './services/firebase.js';
+import { adaptContentWithGemini } from './services/gemini.js';
 
 const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}`;
 const videoUrl = `${import.meta.env.BASE_URL}video/amaru-kids-demo.mp4`;
@@ -38,6 +39,7 @@ function App() {
   const [selectedNeed, setSelectedNeed] = useState('visual');
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [adaptedText, setAdaptedText] = useState('');
   const [progress, setProgress] = useState(initialProgress);
   const [statusMessage, setStatusMessage] = useState('');
 
@@ -47,6 +49,7 @@ function App() {
     [selectedNeed],
   );
   const page = storyPages[currentPage];
+  const storyText = adaptedText || page.text;
   const isCorrect = selectedAnswer === page.answer;
 
   function go(nextScreen) {
@@ -99,6 +102,24 @@ function App() {
     if (currentPage < storyPages.length - 1) {
       setCurrentPage((pageIndex) => pageIndex + 1);
       setSelectedAnswer('');
+      setAdaptedText('');
+    }
+  }
+
+  async function adaptStoryText() {
+    setStatusMessage('Adaptando la historia con IA...');
+
+    try {
+      const result = await adaptContentWithGemini({ profile, page });
+      setAdaptedText(result.adaptedText);
+      setStatusMessage(
+        result.source === 'gemini'
+          ? 'Historia adaptada con Gemini AI.'
+          : 'Modo demo: IA adaptativa simulada hasta activar la clave Gemini.',
+      );
+      speak(result.adaptedText);
+    } catch (error) {
+      setStatusMessage(error.message);
     }
   }
 
@@ -242,7 +263,7 @@ function App() {
               <button
                 type="button"
                 className="round-action"
-                onClick={() => speak(`${page.title}. ${page.text}`)}
+                onClick={() => speak(`${page.title}. ${storyText}`)}
                 aria-label="Escuchar cuento"
               >
                 Audio
@@ -255,8 +276,12 @@ function App() {
                 alt=""
                 aria-hidden="true"
               />
-              <p>{page.text}</p>
+              <p>{storyText}</p>
             </div>
+
+            <button type="button" className="ai-action" onClick={adaptStoryText}>
+              IA adapta la historia
+            </button>
 
             {profile.pictogramSupport && (
               <div className="story-pictos" aria-label="Pictogramas">

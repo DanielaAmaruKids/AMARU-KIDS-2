@@ -1920,6 +1920,17 @@ h2 {
   padding: 0 18px;
 }
 
+.ai-action {
+  background: linear-gradient(135deg, #2563eb, var(--kid-purple));
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 1000;
+  margin-bottom: 16px;
+  min-height: 50px;
+  padding: 0 18px;
+  width: 100%;
+}
+
 .story-content {
   align-items: center;
   background: #f5fcff;

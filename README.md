@@ -26,12 +26,16 @@ Estado actual:
 
 - Demo publica: https://danielaamarukids.github.io/AMARU-KIDS-2/
 - Repositorio: https://github.com/DanielaAmaruKids/AMARU-KIDS-2
+- Video demo publico: https://danielaamarukids.github.io/AMARU-KIDS-2/video/amaru-kids-demo.mp4
+- Video demo en Drive: https://drive.google.com/file/d/1Oe38QwXSkeBjq6SiMEabM-QQk22oG5BG/view?usp=share_link
 - [Entrega final](docs/ENTREGA_FINAL.md)
 - [Entregables Semana 3](docs/ENTREGABLES_SEMANA3.md)
+- [Pitch deck final PDF](docs/pitch.pdf)
 - [Pitch deck final](docs/pitch/amaru-kids-pitch-final.pptx)
-- [Infografia](docs/infografia/amaru-kids-infografia.png)
+- [Infografia oficial](docs/infografia.png)
+- [Infografia editable/referencia](docs/infografia/amaru-kids-infografia.png)
 - [Whitepaper v1.0](docs/WHITEPAPER.md)
-- [Whitepaper v1.0 PDF](docs/whitepaper/amaru-kids-whitepaper-v1.pdf)
+- [Whitepaper v1.0 PDF](docs/whitepaper_v1.pdf)
 - [Maqueta del MVP](docs/MAQUETA.md)
 - [Pitch de presentacion](docs/PITCH.md)
 - [Video demo Semana 2](docs/video/amaru-kids-demo-s2.mp4)
@@ -44,11 +48,14 @@ Estado actual:
 La entrega final incluye:
 
 - Pitch deck final de 12 diapositivas.
+- Pitch deck final en PDF en `docs/pitch.pdf`.
 - Infografia visual del proyecto.
-- Whitepaper v1.0 en Markdown y PDF.
+- Infografia oficial en `docs/infografia.png`.
+- Whitepaper v1.0 en Markdown y PDF en `docs/whitepaper_v1.pdf`.
 - Preguntas y respuestas para jurado.
 - README con enlaces finales.
 - MVP publicado en GitHub Pages.
+- Funcion de IA visible dentro de la historia interactiva.
 - Firebase y Gemini preparados para funcionar con variables seguras.
 
 ## Video demo
