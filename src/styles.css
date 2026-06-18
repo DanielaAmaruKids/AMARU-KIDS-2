@@ -25,6 +25,10 @@ input {
   font: inherit;
 }
 
+a {
+  color: inherit;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -1858,6 +1862,7 @@ h2 {
   min-height: 150px;
   padding: 20px;
   text-align: left;
+  text-decoration: none;
   transition:
     transform 0.16s ease,
     box-shadow 0.16s ease;
@@ -1898,6 +1903,10 @@ h2 {
 
 .activity-card.video {
   background: #ffeaf4;
+}
+
+.activity-card.download {
+  background: #fff7d1;
 }
 
 .story-card {

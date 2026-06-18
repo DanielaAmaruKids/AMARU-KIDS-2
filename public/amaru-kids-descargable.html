@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AMARU KIDS - Página descargable</title>
+    <style>
+      :root {
+        --purple: #7b37c6;
+        --green: #17a268;
+        --teal: #1bb8c9;
+        --yellow: #ffd955;
+        --pink: #ff6aa9;
+        --ink: #21124d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: linear-gradient(180deg, #c9f4ff 0%, #fff8c8 48%, #dff9d8 100%);
+        color: var(--ink);
+        font-family: "Arial Rounded MT Bold", "Nunito", "Segoe UI", system-ui, sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      .screen {
+        min-height: 100dvh;
+        display: none;
+        place-items: center;
+        padding: 20px;
+        position: relative;
+      }
+
+      .screen.active {
+        display: grid;
+      }
+
+      .welcome-card {
+        position: relative;
+        width: min(94vw, 430px);
+        overflow: hidden;
+        border: 3px solid rgba(26, 177, 199, 0.7);
+        border-radius: 14px;
+        background: #9fe9ff;
+        box-shadow: 0 24px 60px rgba(50, 55, 95, 0.24);
+      }
+
+      .welcome-card img {
+        display: block;
+        width: 100%;
+      }
+
+      .hotspot {
+        position: absolute;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0);
+      }
+
+      .hotspot:hover,
+      .hotspot:focus-visible {
+        outline: 4px solid var(--yellow);
+        outline-offset: 2px;
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .hotspot-start {
+        left: 14%;
+        top: 42%;
+        width: 37%;
+        height: 14%;
+      }
+
+      .hotspot-profile {
+        left: 14%;
+        top: 60%;
+        width: 37%;
+        height: 13%;
+      }
+
+      .hotspot-audio {
+        left: 7%;
+        top: 83.5%;
+        width: 32%;
+        height: 13%;
+      }
+
+      .hotspot-vibration {
+        left: 41%;
+        top: 83.5%;
+        width: 34%;
+        height: 13%;
+      }
+
+      .card {
+        width: min(100%, 920px);
+        padding: clamp(20px, 5vw, 34px);
+        border: 3px solid rgba(123, 55, 198, 0.16);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 22px 50px rgba(58, 45, 106, 0.18);
+      }
+
+      .kicker {
+        margin: 0 0 8px;
+        color: var(--green);
+        font-size: 0.82rem;
+        font-weight: 1000;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2 {
+        color: var(--purple);
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        line-height: 1.05;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 18px;
+        color: #3b2d69;
+        font-weight: 1000;
+      }
+
+      .field input {
+        min-height: 52px;
+        padding: 0 16px;
+        border: 2px solid rgba(27, 184, 201, 0.35);
+        border-radius: 12px;
+        color: var(--ink);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .option,
+      .tile,
+      .answer,
+      .stat {
+        border: 2px solid rgba(27, 184, 201, 0.2);
+        border-radius: 12px;
+        background: #ffffff;
+        color: var(--ink);
+      }
+
+      .option,
+      .tile {
+        min-height: 120px;
+        padding: 16px;
+        text-align: left;
+      }
+
+      .option.selected {
+        border-color: var(--yellow);
+        background: #fff7d1;
+        box-shadow: 0 10px 24px rgba(255, 217, 85, 0.28);
+      }
+
+      .option strong,
+      .tile strong,
+      .stat strong {
+        display: block;
+        color: var(--purple);
+        font-size: 1.25rem;
+      }
+
+      .option span,
+      .tile span,
+      .stat span {
+        display: block;
+        margin-top: 8px;
+        color: #5a5274;
+        font-weight: 850;
+        line-height: 1.35;
+      }
+
+      .primary,
+      .ai {
+        width: 100%;
+        min-height: 54px;
+        margin-top: 18px;
+        padding: 0 22px;
+        border-radius: 12px;
+        color: #ffffff;
+        font-weight: 1000;
+      }
+
+      .primary {
+        background: linear-gradient(135deg, var(--purple), #9a42e8);
+      }
+
+      .ai {
+        background: linear-gradient(135deg, #2563eb, var(--purple));
+      }
+
+      .back {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        min-height: 42px;
+        padding: 9px 18px;
+        border: 2px solid rgba(123, 55, 198, 0.24);
+        border-radius: 999px;
+        background: #ffffff;
+        color: var(--purple);
+        font-weight: 1000;
+      }
+
+      .menu-head {
+        width: min(100%, 920px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .badge {
+        padding: 12px 16px;
+        border-radius: 999px;
+        background: var(--yellow);
+        color: #5f4300;
+        font-weight: 1000;
+        white-space: nowrap;
+      }
+
+      .story-box {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 18px;
+        align-items: center;
+        margin: 14px 0;
+        padding: 16px;
+        border: 2px solid rgba(27, 184, 201, 0.18);
+        border-radius: 14px;
+        background: #f5fcff;
+      }
+
+      .story-box img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        object-position: left top;
+        border-radius: 12px;
+      }
+
+      .story-text {
+        margin: 0;
+        color: #2e235d;
+        font-size: 1.22rem;
+        font-weight: 850;
+        line-height: 1.5;
+      }
+
+      .answers {
+        display: grid;
+        gap: 10px;
+        margin: 16px 0;
+      }
+
+      .answer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        min-height: 50px;
+        padding: 12px;
+      }
+
+      .status {
+        margin: 14px 0 0;
+        padding: 12px;
+        border-radius: 10px;
+        background: #e9fbe9;
+        color: #126943;
+        font-weight: 1000;
+      }
+
+      video {
+        display: block;
+        width: 100%;
+        border: 3px solid rgba(123, 55, 198, 0.18);
+        border-radius: 14px;
+        background: #21124d;
+      }
+
+      @media (max-width: 720px) {
+        .grid,
+        .story-box {
+          grid-template-columns: 1fr;
+        }
+
+        .menu-head {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .card {
+          margin-top: 46px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section id="welcome" class="screen active">
+      <div class="welcome-card">
+        <img src="https://danielaamarukids.github.io/AMARU-KIDS-2/assets/amaru-hero-panel.png" alt="AMARU KIDS, leer también es jugar" />
+        <button class="hotspot hotspot-start" aria-label="Iniciar" onclick="startExperience()"></button>
+        <button class="hotspot hotspot-profile" aria-label="Crear perfil" onclick="showScreen('profile')"></button>
+        <button class="hotspot hotspot-audio" aria-label="Audio bienvenida" onclick="speak('Hola, soy Amaru. Bienvenido a Amaru Kids. Leer también es jugar.')"></button>
+        <button class="hotspot hotspot-vibration" aria-label="Vibración accesible" onclick="vibrate([80,35,80])"></button>
+      </div>
+    </section>
+
+    <section id="profile" class="screen">
+      <button class="back" onclick="showScreen('welcome')">Volver</button>
+      <div class="card">
+        <p class="kicker">Crear perfil</p>
+        <h1>¿Cómo prefieres aprender?</h1>
+        <label class="field">
+          Nombre del estudiante
+          <input id="studentName" maxlength="20" placeholder="Escribe tu nombre" />
+        </label>
+        <div class="grid">
+          <button class="option selected" data-profile="visual" onclick="selectProfile('visual', this)">
+            <strong>Letras grandes</strong>
+            <span>Para baja visión: texto gigante, alto contraste y lectura por voz.</span>
+          </button>
+          <button class="option" data-profile="auditory" onclick="selectProfile('auditory', this)">
+            <strong>Apoyo visual</strong>
+            <span>Para discapacidad auditiva: pictogramas, subtítulos y alertas visuales.</span>
+          </button>
+          <button class="option" data-profile="attention" onclick="selectProfile('attention', this)">
+            <strong>Menos distracciones</strong>
+            <span>Para atención y aprendizaje: poco texto, pasos cortos y ritmo calmado.</span>
+          </button>
+        </div>
+        <button class="primary" onclick="saveProfile()">Guardar perfil</button>
+      </div>
+    </section>
+
+    <section id="menu" class="screen">
+      <button class="back" onclick="showScreen('welcome')">Inicio</button>
+      <div>
+        <div class="menu-head">
+          <div>
+            <p class="kicker" id="greeting">Hola, Explorador</p>
+            <h2>Elige una actividad</h2>
+          </div>
+          <div class="badge" id="stars">Estrellas: 0</div>
+        </div>
+        <div class="grid">
+          <button class="tile" onclick="showScreen('story')">
+            <strong>Cuento</strong>
+            <span>Luna y el colibrí mágico</span>
+          </button>
+          <button class="tile" onclick="speak('Muy pronto tendremos juegos.')">
+            <strong>Juego</strong>
+            <span>Actividad sencilla</span>
+          </button>
+          <button class="tile" onclick="speak('Cantemos juntos con Amaru.')">
+            <strong>Canción</strong>
+            <span>Audio y ritmo</span>
+          </button>
+          <button class="tile" onclick="showScreen('progress')">
+            <strong>Progreso</strong>
+            <span>Estrellas y avances</span>
+          </button>
+          <button class="tile" onclick="showScreen('video')">
+            <strong>Video demo</strong>
+            <span>Conoce AMARU KIDS</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="screen">
+      <button class="back" onclick="showScreen('menu')">Menú</button>
+      <div class="card">
+        <p class="kicker">Historia interactiva</p>
+        <h2>Luna y el colibrí mágico</h2>
+        <div class="story-box">
+          <img src="https://danielaamarukids.github.io/AMARU-KIDS-2/assets/amaru-accessibility-panel.png" alt="" />
+          <p id="storyText" class="story-text">Luna conoce a Amaru, un guía andino que convierte una historia en sonidos, imágenes grandes y señales para que cada niño pueda aprender.</p>
+        </div>
+        <button class="ai" onclick="adaptStory()">IA adapta la historia</button>
+        <div class="answers">
+          <label class="answer"><input type="radio" name="answer" value="correcta" /> Adapta la historia</label>
+          <label class="answer"><input type="radio" name="answer" value="no" /> Esconde el cuento</label>
+          <label class="answer"><input type="radio" name="answer" value="no" /> Apaga las imágenes</label>
+        </div>
+        <button class="primary" onclick="winStar()">Ganar estrella</button>
+        <p id="status" class="status" hidden></p>
+      </div>
+    </section>
+
+    <section id="progress" class="screen">
+      <button class="back" onclick="showScreen('menu')">Menú</button>
+      <div class="card">
+        <p class="kicker">Reporte familiar</p>
+        <h2>Tu progreso</h2>
+        <div class="grid">
+          <article class="stat"><strong id="statStars">0</strong><span>Estrellas</span></article>
+          <article class="stat"><strong id="statPages">0</strong><span>Páginas leídas</span></article>
+          <article class="stat"><strong id="statMinutes">0</strong><span>Minutos</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="video" class="screen">
+      <button class="back" onclick="showScreen('menu')">Menú</button>
+      <div class="card">
+        <p class="kicker">Demo oficial</p>
+        <h2>Video AMARU KIDS</h2>
+        <video controls playsinline preload="metadata">
+          <source src="https://danielaamarukids.github.io/AMARU-KIDS-2/video/amaru-kids-demo.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este video.
+        </video>
+      </div>
+    </section>
+
+    <script>
+      let selectedProfile = "visual";
+      let studentName = "Explorador";
+      let progress = { stars: 0, pages: 0, minutes: 0 };
+
+      function showScreen(id) {
+        window.speechSynthesis?.cancel();
+        document.querySelectorAll(".screen").forEach((screen) => screen.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        vibrate([30]);
+      }
+
+      function speak(text) {
+        if (!("speechSynthesis" in window)) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "es-EC";
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function vibrate(pattern) {
+        if ("vibrate" in navigator) navigator.vibrate(pattern);
+      }
+
+      function startExperience() {
+        speak("Bienvenido a Amaru Kids. Leer también es jugar.");
+        showScreen(studentName === "Explorador" ? "profile" : "menu");
+      }
+
+      function selectProfile(profile, button) {
+        selectedProfile = profile;
+        document.querySelectorAll(".option").forEach((item) => item.classList.remove("selected"));
+        button.classList.add("selected");
+        vibrate([35]);
+      }
+
+      function saveProfile() {
+        studentName = document.getElementById("studentName").value.trim() || "Explorador";
+        document.getElementById("greeting").textContent = `Hola, ${studentName}`;
+        speak(`Hola ${studentName}. Tu perfil está listo.`);
+        showScreen("menu");
+      }
+
+      function adaptStory() {
+        const text = document.getElementById("storyText");
+        const adaptations = {
+          visual: "Luna conoce a Amaru. Mira palabras grandes, escucha el audio y sigue las imágenes para aprender.",
+          auditory: "Luna conoce a Amaru. Usa pictogramas: Luna, Amaru y aprender. La historia se entiende con apoyo visual.",
+          attention: "Luna conoce a Amaru. Un paso a la vez: observa, respira y responde cuando estés listo.",
+        };
+        text.textContent = adaptations[selectedProfile];
+        showStatus("Modo demo: IA adaptativa aplicada según el perfil.");
+        speak(adaptations[selectedProfile]);
+      }
+
+      function winStar() {
+        const picked = document.querySelector('input[name="answer"]:checked');
+        if (!picked || picked.value !== "correcta") {
+          showStatus("Elige la respuesta correcta para ganar tu estrella.");
+          return;
+        }
+        progress.stars += 1;
+        progress.pages = Math.max(progress.pages, 1);
+        progress.minutes += 3;
+        document.getElementById("stars").textContent = `Estrellas: ${progress.stars}`;
+        document.getElementById("statStars").textContent = progress.stars;
+        document.getElementById("statPages").textContent = progress.pages;
+        document.getElementById("statMinutes").textContent = progress.minutes;
+        showStatus("¡Ganaste una estrella! Progreso guardado en este navegador.");
+        vibrate([90, 40, 90, 40, 120]);
+      }
+
+      function showStatus(message) {
+        const status = document.getElementById("status");
+        status.textContent = message;
+        status.hidden = false;
+      }
+    </script>
+  </body>
+</html>

@@ -6,6 +6,7 @@ import { adaptContentWithGemini } from './services/gemini.js';
 
 const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}`;
 const videoUrl = `${import.meta.env.BASE_URL}video/amaru-kids-demo.mp4`;
+const htmlDownloadUrl = `${import.meta.env.BASE_URL}amaru-kids-descargable.html`;
 
 const initialProgress = {
   completedPages: 0,
@@ -245,6 +246,14 @@ function App() {
               <strong>Video demo</strong>
               <span>Conoce AMARU KIDS</span>
             </button>
+            <a
+              className="activity-card download"
+              href={htmlDownloadUrl}
+              download="amaru-kids-descargable.html"
+            >
+              <strong>Descargar HTML</strong>
+              <span>Codigo listo para guardar</span>
+            </a>
           </div>
         </section>
       )}
