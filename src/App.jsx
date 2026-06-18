@@ -1,17 +1,38 @@
 import { useMemo, useState } from 'react';
-import { accessibilityNeeds, storyPages } from './data/story.js';
+import {
+  accessibilityNeeds,
+  businessTiers,
+  competitiveAdvantages,
+  firebaseDemoUser,
+  futureCapabilities,
+  impactIndicators,
+  mvpCapabilities,
+  storyPages,
+} from './data/story.js';
 import {
   buildAccessibilityProfile,
-  getAdaptationSummary,
 } from './services/adaptiveEngine.js';
-import { adaptContentWithGemini, isGeminiReady } from './services/gemini.js';
-import { isFirebaseReady, saveFamilyProgress } from './services/firebase.js';
+import { adaptContentWithGemini } from './services/gemini.js';
+import { saveFamilyProgress } from './services/firebase.js';
 
 const initialProgress = {
   completedPages: 0,
   stars: 0,
   minutes: 12,
 };
+
+const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}`;
+
+const flowSteps = [
+  ['Inicio', 'IN'],
+  ['Crear perfil', 'PF'],
+  ['Seleccionar necesidad', 'SN'],
+  ['IA adapta la interfaz', 'IA'],
+  ['Historia interactiva', 'HI'],
+  ['Actividad sencilla', 'AC'],
+  ['Ganar estrella', 'GE'],
+  ['Reporte de progreso', 'RP'],
+];
 
 function speak(text) {
   if (!('speechSynthesis' in window)) return;
@@ -21,6 +42,12 @@ function speak(text) {
   utterance.lang = 'es-EC';
   utterance.rate = 0.9;
   window.speechSynthesis.speak(utterance);
+}
+
+function vibrate(pattern = [80]) {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(pattern);
+  }
 }
 
 function App() {
@@ -42,11 +69,7 @@ function App() {
   const progressPercent = Math.round((progress.completedPages / storyPages.length) * 100);
 
   function toggleNeed(id) {
-    setSelectedNeeds((current) =>
-      current.includes(id)
-        ? current.filter((item) => item !== id)
-        : [...current, id],
-    );
+    setSelectedNeeds([id]);
   }
 
   function goToPage(index) {
@@ -63,9 +86,11 @@ function App() {
       ...progress,
       completedPages: Math.max(progress.completedPages, currentPage + 1),
       stars: progress.stars + 1,
+      profileName: profile.profileName,
     };
 
     setProgress(nextProgress);
+    vibrate([90, 40, 90]);
     saveFamilyProgress(nextProgress)
       .then((result) => {
         setStatusMessage(
@@ -102,76 +127,104 @@ function App() {
     <main
       className={[
         'app-shell',
+        'poster-shell',
         profile.highContrast ? 'is-high-contrast' : '',
         profile.reducedMotion ? 'is-calm' : '',
       ].join(' ')}
       style={{ '--font-scale': fontScale }}
     >
-      <section className="hero" aria-labelledby="page-title">
-        <div className="hero-copy">
-          <p className="eyebrow">MVP educativo inclusivo</p>
-          <h1 id="page-title">AMARU KIDS</h1>
-          <p className="lead">
-            Una aventura de aprendizaje que adapta voz, color, pictogramas y
-            ritmo segun cada nino.
-          </p>
-          <div className="hero-actions">
-            <a href="#mvp" className="hero-button">
-              Explorar demo
+      <section className="poster-board" aria-labelledby="page-title">
+        <article className="poster-panel hero-poster panel-hero" id="inicio">
+          <img src={assetUrl('amaru-hero-panel.png')} alt="Pantalla de inicio ilustrada de AMARU KIDS" />
+          <div className="hero-overlay">
+            <h1 id="page-title">AMARU KIDS</h1>
+            <p>Leer tambien es jugar</p>
+            <a href="#mvp" className="poster-button primary">
+              Iniciar
             </a>
-            <a href="#impacto" className="hero-link">
-              Ver impacto
+            <a href="#mvp" className="poster-button secondary">
+              Crear perfil
             </a>
-          </div>
-        </div>
-
-        <div className="hero-dashboard" aria-label="Resumen del proyecto">
-          <div className="mascot-card">
-            <div className="mascot-face" aria-hidden="true">
-              AK
-            </div>
-            <div>
-              <strong>Modo aprendizaje adaptativo</strong>
-              <span>{getAdaptationSummary(profile)}</span>
+            <div className="mini-badges">
+              <span>Audio bienvenida</span>
+              <span>Vibracion accesible</span>
             </div>
           </div>
-          <div className="service-status" aria-label="Estado de servicios">
-            <span>{isFirebaseReady() ? 'Firebase activo' : 'Firebase listo'}</span>
-            <span>{isGeminiReady() ? 'Gemini activo' : 'Gemini listo'}</span>
-          </div>
-          <div className="impact-number">
-            <strong>+900.000</strong>
-            <span>personas con barreras visuales, auditivas o comunicacionales</span>
-          </div>
-        </div>
-      </section>
+        </article>
 
-      <section className="mvp-grid" id="mvp" aria-label="MVP interactivo">
-        <aside className="control-panel" aria-label="Perfil de accesibilidad">
-          <div className="panel-heading">
-            <p>Perfil</p>
-            <h2>Accesibilidad viva</h2>
+        <article className="poster-panel flow-panel panel-flow">
+          <span className="panel-tag purple">1. Flujo del MVP</span>
+          <div className="flow-diagram">
+            {flowSteps.map(([label, code], index) => (
+              <div className="flow-step" key={label}>
+                <button
+                  type="button"
+                  className="flow-icon"
+                  onClick={() => {
+                    if (index === 0) document.getElementById('inicio')?.scrollIntoView();
+                    if (index === 1 || index === 2) document.getElementById('mvp')?.scrollIntoView();
+                    if (index === 7) document.getElementById('impacto')?.scrollIntoView();
+                  }}
+                  aria-label={label}
+                >
+                  {code}
+                </button>
+                <small>{label}</small>
+              </div>
+            ))}
           </div>
+        </article>
 
-          <div className="need-list">
+        <article className="poster-panel mascot-poster panel-mascot">
+          <span className="panel-tag green">3. Mascota oficial</span>
+          <img src={assetUrl('amaru-mascot-panel.png')} alt="Mascota AMARU ilustrada" />
+        </article>
+
+        <article className="poster-panel screens-panel">
+          <span className="panel-tag purple">2. Pantallas del MVP</span>
+          <img src={assetUrl('amaru-screens-panel.png')} alt="Pantallas ilustradas del MVP" />
+        </article>
+
+        <article className="poster-panel ai-panel">
+          <span className="panel-tag blue">4. Inteligencia Artificial Gemini</span>
+          <div className="ai-demo">
+            <label>Texto original</label>
+            <p>El colibri emprendio un largo viaje para encontrar una flor especial.</p>
+            <label>Version adaptada</label>
+            <p>{adaptedText || 'El colibri viajo para buscar una flor.'}</p>
+            <label>Version pictografica</label>
+            <div className="picture-row">
+              <img src={assetUrl('amaru-ai-panel.png')} alt="" aria-hidden="true" />
+            </div>
+            <button type="button" className="poster-button gemini" onClick={adaptStoryText}>
+              Adaptar con IA
+            </button>
+          </div>
+        </article>
+
+        <article className="poster-panel firebase-panel">
+          <span className="panel-tag orange">5. Estructura en Firebase</span>
+          <pre>{JSON.stringify(firebaseDemoUser, null, 2)}</pre>
+          <img src={assetUrl('amaru-firebase-panel.png')} alt="" aria-hidden="true" />
+        </article>
+
+        <article className="poster-panel accessibility-panel" id="mvp">
+          <span className="panel-tag green">3. Modos de accesibilidad</span>
+          <div className="mode-grid">
             {accessibilityNeeds.map((need) => (
               <button
                 key={need.id}
                 type="button"
-                className={`need-card ${selectedNeeds.includes(need.id) ? 'is-selected' : ''}`}
-                aria-pressed={selectedNeeds.includes(need.id)}
+                className={`mode-card ${selectedNeeds.includes(need.id) ? 'is-selected' : ''}`}
                 onClick={() => toggleNeed(need.id)}
               >
-                <span className="need-initial">{need.label.slice(0, 1)}</span>
-                <span>
-                  <strong>{need.label}</strong>
-                  <small>{need.description}</small>
-                </span>
+                <strong>{need.label.replace('Modo ', 'Modo ')}</strong>
+                <span>{need.shortLabel}</span>
+                <small>{need.description}</small>
               </button>
             ))}
           </div>
-
-          <label className="range-control">
+          <label className="range-control poster-range">
             Tamano de letra
             <input
               type="range"
@@ -182,33 +235,19 @@ function App() {
               onChange={(event) => setFontScale(event.target.value)}
             />
           </label>
-        </aside>
+        </article>
 
-        <section className="learning-console" aria-labelledby="story-title">
-          <div className="console-top">
+        <article className="poster-panel live-story-panel">
+          <span className="panel-tag teal">Historia adaptada funcional</span>
+          <div className="story-preview">
+            <div className="story-card-art">
+              <img src={assetUrl('amaru-accessibility-panel.png')} alt="" aria-hidden="true" />
+            </div>
             <div>
-              <p>Historia interactiva</p>
+              <p className="console-kicker">Pantalla {currentPage + 1}</p>
               <h2 id="story-title">{page.title}</h2>
+              <p className="story-text">{storyText}</p>
             </div>
-            <div className="page-dots" aria-label="Paginas">
-              {storyPages.map((item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={index === currentPage ? 'is-active' : ''}
-                  aria-label={`Ir a pagina ${index + 1}`}
-                  onClick={() => goToPage(index)}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="story-stage">
-            <div className="story-art" aria-hidden="true">
-              <span>{currentPage + 1}</span>
-              <div className="story-path" />
-            </div>
-            <p className="story-text">{storyText}</p>
           </div>
 
           {profile.pictogramSupport && (
@@ -219,16 +258,34 @@ function App() {
             </div>
           )}
 
-          <div className="actions">
+          <div className="page-dots story-tabs" aria-label="Paginas">
+            {storyPages.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                className={index === currentPage ? 'is-active' : ''}
+                aria-label={`Ir a pagina ${index + 1}`}
+                onClick={() => goToPage(index)}
+              />
+            ))}
+          </div>
+
+          <div className="actions poster-actions">
             <button type="button" onClick={() => speak(`${page.title}. ${storyText}`)}>
-              Escuchar
+              Audio
             </button>
-            <button type="button" className="ai-button" onClick={adaptStoryText}>
-              Adaptar con IA
+            <button type="button" onClick={() => vibrate([120, 50, 120])}>
+              Vibracion
             </button>
             <button type="button" onClick={() => window.speechSynthesis?.cancel()}>
-              Pausar
+              Pausa
             </button>
+          </div>
+
+          <div className="poster-progress">
+            <span>Progreso {progressPercent}%</span>
+            <span>{progress.stars} estrellas</span>
+            <span>{progress.minutes} min</span>
           </div>
 
           <fieldset className="question">
@@ -258,57 +315,65 @@ function App() {
             Ganar estrella
           </button>
           {statusMessage && <p className="status-message">{statusMessage}</p>}
-        </section>
+        </article>
 
-        <aside className="family-panel" aria-label="Panel familiar">
-          <div className="panel-heading">
-            <p>Familia</p>
-            <h2>Progreso claro</h2>
+        <article className="poster-panel indicators-panel">
+          <span className="panel-tag purple">6. Indicadores de impacto</span>
+          <div className="mini-metrics">
+            {impactIndicators.map((item) => (
+              <div key={item.indicator}>
+                <strong>{item.goal}</strong>
+                <span>{item.indicator}</span>
+              </div>
+            ))}
           </div>
-          <div className="progress-ring" aria-label={`Progreso ${progressPercent}%`}>
-            <div>{progressPercent}%</div>
+        </article>
+
+        <article className="poster-panel business-poster">
+          <span className="panel-tag teal">7. Modelo de negocio</span>
+          <div className="business-columns">
+            {businessTiers.map((tier) => (
+              <section key={tier.name}>
+                <h3>{tier.name}</h3>
+                <ul>
+                  {tier.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ))}
           </div>
-          <dl>
+        </article>
+
+        <article className="poster-panel advantage-panel" id="impacto">
+          <span className="panel-tag pink">8. Ventaja competitiva</span>
+          <div className="competitor-grid">
             <div>
-              <dt>Historia completada</dt>
-              <dd>
-                {progress.completedPages}/{storyPages.length}
-              </dd>
+              <h3>Competidores</h3>
+              <p>Otsimo: educacion especial</p>
+              <p>Lazarillo: accesibilidad visual</p>
+              <p>Yo Tambien Leo: lectura</p>
+              <p>Dia a Dia: organizacion</p>
             </div>
-            <div>
-              <dt>Tiempo de uso</dt>
-              <dd>{progress.minutes} min</dd>
+            <div className="amaru-advantage">
+              <h3>AMARU KIDS</h3>
+              {competitiveAdvantages.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
             </div>
-            <div>
-              <dt>Estrellas</dt>
-              <dd>{progress.stars}</dd>
-            </div>
-          </dl>
-        </aside>
+          </div>
+        </article>
       </section>
 
-      <section className="impact-section" id="impacto" aria-label="Impacto">
-        <div>
-          <p className="eyebrow">Impacto y ODS</p>
-          <h2>Inclusiva desde el primer toque</h2>
-          <p>
-            AMARU KIDS aporta a ODS 4 y ODS 10 con una experiencia accesible,
-            medible y preparada para crecer hacia escuelas y familias.
-          </p>
-        </div>
-        <div className="impact-cards">
-          <article>
-            <strong>ODS 4</strong>
-            <span>Educacion de calidad</span>
-          </article>
-          <article>
-            <strong>ODS 10</strong>
-            <span>Reduccion de desigualdades</span>
-          </article>
-          <article>
-            <strong>MVP</strong>
-            <span>Demo web publica</span>
-          </article>
+      <section className="poster-reference">
+        <p className="eyebrow">Referencia visual completa</p>
+        <img src={assetUrl('amaru-infografia-final.png')} alt="Infografia final completa de AMARU KIDS" />
+      </section>
+
+      <section className="legacy-content" aria-label="Contenido complementario">
+        <div className="sr-note">
+          <p>Resumen complementario del proyecto AMARU KIDS.</p>
+          <span>{mvpCapabilities.length + futureCapabilities.length} puntos de alcance definidos.</span>
         </div>
       </section>
     </main>

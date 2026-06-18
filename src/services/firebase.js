@@ -20,8 +20,15 @@ export function isFirebaseReady() {
 }
 
 export async function saveFamilyProgress(progress) {
+  const profileName = progress.profileName || 'visual';
   const payload = {
-    ...progress,
+    nombre: progress.name || 'Mateo',
+    edad: progress.age || 7,
+    perfil: profileName,
+    estrellas: progress.stars,
+    historias_completadas: progress.completedPages,
+    minutos_lectura: progress.minutes,
+    ultima_sesion: new Date().toISOString().slice(0, 10),
     updatedAt: new Date().toISOString(),
   };
 
@@ -33,7 +40,7 @@ export async function saveFamilyProgress(progress) {
   await setDoc(
     doc(db, 'familyReports', 'demo-user'),
     {
-      ...progress,
+      ...payload,
       updatedAt: serverTimestamp(),
     },
     { merge: true },

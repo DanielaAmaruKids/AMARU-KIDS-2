@@ -1,6 +1,6 @@
 # AMARU KIDS
 
-AMARU KIDS es una plataforma educativa inclusiva impulsada por inteligencia artificial adaptativa. Su objetivo es que ninos con discapacidad visual, auditiva, dificultades de comunicacion, TDAH o necesidades educativas especificas puedan acceder al aprendizaje digital de forma autonoma, motivadora y segura.
+AMARU KIDS es una plataforma educativa inclusiva impulsada por inteligencia artificial adaptativa. Su objetivo es que ninos con discapacidad visual, discapacidad auditiva, dificultades del habla, TDAH o necesidades educativas especificas puedan acceder al aprendizaje digital de forma autonoma, motivadora y segura.
 
 > "La tecnologia tambien debe sentirse, escucharse y comprenderse."
 
@@ -13,13 +13,14 @@ El MVP esta en fase de prototipo funcional para hackathon. Actualmente permite p
 Estado actual:
 
 - Interfaz React + Vite creada.
-- Perfil de accesibilidad funcional.
-- Historia interactiva funcional.
+- Matriz de adaptacion inteligente con tres perfiles base: visual, auditivo y cognitivo/TDAH.
+- Historia interactiva adaptada funcional.
 - Lectura asistida por voz funcional en navegadores compatibles.
-- Modo visual inclusivo y ajuste de texto funcionales.
+- Modo visual inclusivo, apoyo visual, pictogramas y ajuste de texto funcionales.
+- Vibracion inteligente en dispositivos compatibles.
 - Recompensas y panel familiar basico funcionales.
 - Firebase preparado para guardar progreso cuando se agreguen claves reales.
-- Gemini AI preparado para adaptar contenido cuando se agregue una clave real.
+- Gemini AI preparado para generar variaciones simples del texto de la historia cuando se agregue una clave real.
 
 ## Entregables
 
@@ -63,29 +64,71 @@ El video demo de 2 minutos muestra:
 
 ## Problema
 
-En Ecuador, mas de 900.000 personas presentan dificultades relacionadas con la vision, la audicion o la comunicacion. Muchas aplicaciones educativas siguen dependiendo de interfaces visuales complejas, instrucciones habladas, costos altos o contenidos que no responden al contexto latinoamericano.
+En Ecuador, mas de 1 millon de personas presentan dificultades funcionales permanentes. Entre ellas hay ninos con barreras visuales, auditivas, comunicacionales o de atencion que necesitan herramientas tecnologicas adaptadas para acceder a educacion de calidad.
+
+Muchas aplicaciones educativas son costosas, dificiles de usar, estan pensadas para una sola discapacidad o no responden al contexto latinoamericano.
 
 AMARU KIDS nace para reducir esa brecha desde la infancia: no busca que los ninos se adapten a la tecnologia, sino que la tecnologia se adapte a cada nino.
 
 ## MVP
 
-La primera version valida una experiencia educativa inclusiva con:
+La primera version valida una experiencia educativa inclusiva con el lema "Leer tambien es jugar":
 
-- Registro y perfil de accesibilidad.
-- Historia interactiva accesible: "El viaje de Amaru".
+- Seleccion de necesidad: modo visual, modo auditivo y modo cognitivo/TDAH.
+- Historia interactiva accesible: "Luna y el colibri magico".
 - Lectura asistida por voz mediante Text-to-Speech del navegador.
 - Modo visual inclusivo con alto contraste y ajuste de texto.
 - Pictogramas de apoyo para comunicacion y comprension.
+- Vibracion inteligente para refuerzo y ayuda.
 - Sistema inicial de recompensas.
 - Panel familiar basico con avance, tiempo de uso y estrellas.
+- Mascota oficial AMARU como guia de historias y recompensas.
+- Estructura Firebase demostrable con nombre, edad, perfil, estrellas, historias completadas y ultima sesion.
+
+Fuera del MVP por ahora:
+
+- Comunidad online.
+- Compras dentro de la app.
+- Chat avanzado de IA.
+
+## Mascota oficial
+
+La mascota oficial se llama AMARU. Es una serpiente andina amigable, colorida y sonriente que guia las historias, entrega recompensas y fortalece la identidad ecuatoriana y latinoamericana del proyecto.
+
+Frase de AMARU: "Aprendamos juntos".
 
 ## Tecnologias
 
 - Frontend: React + Vite.
 - Backend propuesto: Firebase.
-- Inteligencia artificial propuesta: Gemini AI.
+- Inteligencia artificial propuesta: Gemini AI para adaptar frases simples y generar variantes con pictogramas.
 - Diseno: Figma.
 - Control de versiones: GitHub.
+
+## Estructura Firebase del MVP
+
+Ejemplo de datos que puede guardar el reporte familiar:
+
+```json
+{
+  "nombre": "Mateo",
+  "edad": 7,
+  "perfil": "auditivo",
+  "estrellas": 12,
+  "historias_completadas": 4,
+  "ultima_sesion": "2026-05-25"
+}
+```
+
+## Indicadores de impacto
+
+| Indicador | Meta |
+| --- | --- |
+| Ninos que usan la app | 100 |
+| Historias completadas | 500 |
+| Estrellas obtenidas | 1000 |
+| Escuelas participantes | 5 |
+| Tiempo promedio de lectura | 10 min |
 
 ## Estructura
 
@@ -164,9 +207,9 @@ Para GitHub Pages, activa **Settings > Pages > Source > GitHub Actions** y vuelv
 
 ## Roadmap
 
-- Fase 1: investigacion, diseno de wireframes y arquitectura.
-- Fase 2: desarrollo del MVP con accesibilidad e IA.
-- Fase 3: piloto con escuelas y familias.
+- Fase 1: investigacion, diseno de wireframes y arquitectura inclusiva.
+- Fase 2: desarrollo del MVP con tres perfiles adaptativos, historia, audio, pictogramas y reporte familiar.
+- Fase 3: piloto local con escuelas del Distrito Metropolitano de Quito, familias y centros terapeuticos.
 - Fase 4: escalamiento nacional.
 - Fase 5: expansion latinoamericana.
 

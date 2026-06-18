@@ -4,15 +4,15 @@
 
 ## 1. Resumen ejecutivo
 
-AMARU KIDS es una plataforma educativa inclusiva que combina accesibilidad, inteligencia artificial adaptativa, gamificacion y acompanamiento familiar para mejorar el aprendizaje digital de ninos con discapacidad visual, discapacidad auditiva, dificultades de comunicacion, TDAH o necesidades educativas especificas.
+AMARU KIDS es una plataforma educativa inclusiva que combina accesibilidad, inteligencia artificial adaptativa, gamificacion y acompanamiento familiar para mejorar el aprendizaje digital de ninos con discapacidad visual, discapacidad auditiva, dificultades del habla, TDAH o necesidades educativas especificas.
 
 El proyecto responde a una brecha clara: muchas herramientas educativas digitales siguen disenadas para un estudiante promedio que puede ver, escuchar, leer, escribir y concentrarse sin apoyos. AMARU KIDS propone lo contrario: una experiencia que se adapta al nino desde el primer uso.
 
-El MVP actual presenta una historia interactiva llamada "El viaje de Amaru", perfiles de accesibilidad, lectura asistida, pictogramas, ajustes visuales, recompensas, panel familiar, integracion preparada con Firebase y adaptacion de contenido con Gemini AI.
+El MVP actual presenta una historia interactiva llamada "Luna y el colibri magico", tres perfiles de accesibilidad, lectura asistida, pictogramas, ajustes visuales, vibracion inteligente, recompensas, la mascota oficial AMARU, panel familiar, integracion preparada con Firebase y adaptacion de contenido con Gemini AI.
 
 ## 2. Problema
 
-En Ecuador existen mas de 900.000 personas con dificultades relacionadas con vision, audicion o comunicacion. Dentro de este grupo se reportan necesidades como dificultades visuales, auditivas y de comunicacion que impactan directamente la participacion en espacios educativos digitales.
+En Ecuador existen mas de 1 millon de personas con dificultades funcionales permanentes. Dentro de este grupo se reportan necesidades como dificultades visuales, auditivas, comunicacionales y de atencion que impactan directamente la participacion en espacios educativos digitales.
 
 El problema no es solo tecnologico. Tambien es pedagogico y social:
 
@@ -32,7 +32,7 @@ La solucion se estructura en cuatro capas:
 
 1. **Accesibilidad:** alto contraste, ajuste de texto, lectura por voz, pictogramas y flujo simple.
 2. **Aprendizaje:** historias interactivas, actividades cortas, preguntas de comprension y recompensas.
-3. **IA adaptativa:** Gemini AI genera o ajusta recomendaciones de contenido segun el perfil y el progreso.
+3. **IA adaptativa:** Gemini AI genera variaciones simples del texto de la historia segun el perfil y el progreso, sin convertirse todavia en chat avanzado.
 4. **Acompanamiento familiar:** Firebase permite guardar progreso, estrellas, reportes y datos utiles para familia o docentes.
 
 ## 4. MVP funcional
@@ -41,11 +41,13 @@ El MVP valida el flujo principal de la plataforma:
 
 - Pantalla principal con propuesta educativa clara.
 - Seleccion de perfil de accesibilidad.
-- Historia interactiva "El viaje de Amaru".
+- Historia interactiva "Luna y el colibri magico".
 - Opciones de lectura, escucha, pictogramas y contraste.
+- Vibracion inteligente para respuestas o apoyo.
 - Actividad de comprension.
 - Recompensas por avance.
 - Panel familiar con progreso, tiempo y reportes.
+- Mascota oficial AMARU como guia de historias.
 - Preparacion tecnica para Firebase y Gemini AI.
 
 La app esta publicada como demo web en GitHub Pages:
@@ -70,16 +72,29 @@ La aplicacion esta preparada para funcionar en dos modos:
 - **Modo prototipo:** usa almacenamiento local del navegador si no existen claves reales.
 - **Modo real:** usa Firebase y Gemini cuando las variables de entorno estan configuradas en local o en GitHub Actions.
 
+Estructura de datos demostrable:
+
+```json
+{
+  "nombre": "Mateo",
+  "edad": 7,
+  "perfil": "auditivo",
+  "estrellas": 12,
+  "historias_completadas": 4,
+  "ultima_sesion": "2026-05-25"
+}
+```
+
 ## 6. Inteligencia artificial
 
-Gemini AI se usa como motor de adaptacion educativa. Su rol no es reemplazar a docentes o terapeutas, sino apoyar la personalizacion del contenido.
+Gemini AI se usa como motor de adaptacion educativa. Su rol no es reemplazar a docentes o terapeutas, sino apoyar la personalizacion del contenido. En el MVP su alcance se limita a generar variantes sencillas del texto de la historia, por ejemplo convertir una frase compleja en una frase corta con pictogramas asociados.
 
 Ejemplos de uso:
 
-- Ajustar la dificultad de una actividad.
-- Sugerir apoyos segun perfil de accesibilidad.
-- Proponer recomendaciones para familia o docente.
-- Crear variantes de contenido mas visuales, auditivas o comunicativas.
+- Ajustar una frase de la historia a lenguaje claro.
+- Sugerir pictogramas de apoyo segun perfil de accesibilidad.
+- Crear variantes mas visuales, auditivas o calmadas.
+- Mantener fuera del MVP el chat avanzado de IA.
 
 La IA se presenta de forma visible en el MVP mediante recomendaciones adaptativas y mensajes de apoyo educativo.
 
@@ -97,6 +112,16 @@ Impacto esperado:
 - Informacion simple para familias y docentes.
 - Herramienta escalable para escuelas, fundaciones y centros terapeuticos.
 
+Indicadores iniciales:
+
+| Indicador | Meta |
+| --- | --- |
+| Ninos que usan la app | 100 |
+| Historias completadas | 500 |
+| Estrellas obtenidas | 1000 |
+| Escuelas participantes | 5 |
+| Tiempo promedio de lectura | 10 min |
+
 ## 8. Usuarios beneficiarios
 
 Los usuarios principales son ninos de educacion inicial y basica con necesidades educativas especificas. Tambien se benefician:
@@ -108,13 +133,16 @@ Los usuarios principales son ninos de educacion inicial y basica con necesidades
 
 ## 9. Modelo de sostenibilidad
 
-El proyecto puede crecer mediante un modelo hibrido:
+El proyecto puede crecer mediante un modelo B2B2C:
 
+- Freemium familiar con una historia gratis y suscripcion familiar.
+- Version gratuita con 1 historia, 1 perfil y recompensas basicas.
+- Premium familiar con historias ilimitadas, mas actividades y reportes completos.
 - Licencias institucionales para escuelas y centros terapeuticos.
+- Plan institucional con panel docente, seguimiento grupal y estadistica.
 - Convenios con fundaciones y programas de inclusion.
-- Version familiar gratuita con funciones basicas.
 - Plan premium para reportes avanzados y contenido adicional.
-- Alianzas con programas de responsabilidad social e innovacion educativa.
+- Alianzas B2G con programas publicos, ODS, ONG y responsabilidad social.
 
 ## 10. Privacidad y seguridad
 

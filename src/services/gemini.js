@@ -16,8 +16,10 @@ export async function adaptContentWithGemini({ profile, page }) {
   }
 
   const prompt = `
-Adapta este texto educativo para un nino usando este perfil de accesibilidad.
-Responde solo con el texto adaptado, claro y breve.
+Adapta este texto educativo para un nino usando este perfil de accesibilidad de AMARU KIDS.
+No actues como chat avanzado. Genera solo una variante simple del texto de la historia.
+Usa frases cortas, lenguaje claro y, si el perfil requiere apoyo visual, menciona pictogramas asociados.
+Responde solo con el texto adaptado.
 
 Perfil: ${JSON.stringify(profile)}
 Texto: ${page.text}
