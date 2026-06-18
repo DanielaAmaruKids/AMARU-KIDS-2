@@ -1896,6 +1896,10 @@ h2 {
   background: #e9fbe9;
 }
 
+.activity-card.video {
+  background: #ffeaf4;
+}
+
 .story-card {
   max-width: 920px;
 }
@@ -2020,6 +2024,18 @@ h2 {
 .progress-grid span {
   color: #5a5274;
   font-weight: 1000;
+}
+
+.video-card {
+  max-width: 960px;
+}
+
+.demo-video {
+  background: #21124d;
+  border: 3px solid rgba(123, 55, 198, 0.18);
+  border-radius: 14px;
+  display: block;
+  width: 100%;
 }
 
 .kid-visual-mode .screen-card,

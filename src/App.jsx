@@ -4,6 +4,7 @@ import { buildAccessibilityProfile } from './services/adaptiveEngine.js';
 import { saveFamilyProgress } from './services/firebase.js';
 
 const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}`;
+const videoUrl = `${import.meta.env.BASE_URL}video/amaru-kids-demo.mp4`;
 
 const initialProgress = {
   completedPages: 0,
@@ -219,6 +220,10 @@ function App() {
               <strong>Progreso</strong>
               <span>Estrellas y avances</span>
             </button>
+            <button type="button" onClick={() => go('video')} className="activity-card video">
+              <strong>Video demo</strong>
+              <span>Conoce AMARU KIDS</span>
+            </button>
           </div>
         </section>
       )}
@@ -312,6 +317,22 @@ function App() {
                 <span>Minutos</span>
               </article>
             </div>
+          </div>
+        </section>
+      )}
+
+      {screen === 'video' && (
+        <section className="kid-screen video-screen" aria-labelledby="video-title">
+          <button type="button" className="back-button" onClick={() => go('menu')}>
+            Menu
+          </button>
+          <div className="screen-card video-card">
+            <p className="screen-kicker">Demo oficial</p>
+            <h2 id="video-title">Video AMARU KIDS</h2>
+            <video className="demo-video" controls playsInline preload="metadata">
+              <source src={videoUrl} type="video/mp4" />
+              Tu navegador no puede reproducir este video.
+            </video>
           </div>
         </section>
       )}
